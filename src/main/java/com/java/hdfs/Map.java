@@ -18,9 +18,12 @@ public class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
 	@Override
 	protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, IntWritable>.Context context) throws IOException, InterruptedException {
 		// 출력 키에 넣을 문자열 변수
-		String strKey = "";
+		String[] values = value.toString().split(",");
+		String strKey = values[1] + " , ";
 		// 출력 키에 문자열 변수 적용
 		textKey.set(strKey);
+		
+		IntWritable intValue = new IntWritable(11);
 		// 전체 결과 출력하기
 		context.write(textKey, intValue);
 	}
