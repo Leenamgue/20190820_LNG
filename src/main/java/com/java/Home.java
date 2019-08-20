@@ -34,14 +34,14 @@ public class Home extends HttpServlet {
 		} else {
 			// 정제 요청 대상 파일명 값이 있으면 HDFS 실행 요청 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 			
-			/**/
+			/***************************************************************************************/
 			Hadoop hadoop = new Hadoop();
 			HashMap<String, Object> results = hadoop.run(file_name);
 			
 			if ((Integer) results.get("status") == 2) {
 				req.setAttribute("result", results.get("result"));
 			}
-			/**/
+			/***************************************************************************************/
 			req.setAttribute("file_name", file_name);
 			RequestDispatcher rd = req.getRequestDispatcher(viewPath("result"));
 			rd.forward(req, res);

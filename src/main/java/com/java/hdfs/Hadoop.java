@@ -23,8 +23,8 @@ public class Hadoop {
 	protected Configuration localConf = null;
 	// hadoop 접속 주소 (hadoop server ip 수정 할것) <<<<<<<<<<<<<<<<<<
 	protected final String URL = "hdfs://192.168.3.145:9000";
-//	protected final String LOCAL = "C:\\Users\\GD7\\Desktop\\data\\";
-	protected final String LOCAL = "/root/data/";
+	protected final String LOCAL = "C:\\Users\\GD7\\Desktop\\data\\";
+//	protected final String LOCAL = "/root/data/";
 	// hadoop 정제 대상 경로 / 처리 결과 저장 경로 및 파일
 	protected final String INPUT = "/input/";
 	protected final String OUTPUT = "/output";
@@ -55,7 +55,7 @@ public class Hadoop {
 			 * 3) 성공 시 결과 받기 : resultData()
 			 **************************************************/
 			
-			/**/
+			/***************************************************************************************/
 			if (fileCopy(fileName)) {
 				try {
 					mapReduser();
@@ -67,38 +67,46 @@ public class Hadoop {
 					status = 1;
 				}
 			}
-			/**/
+			/***************************************************************************************/
 		}
 		resultMap.put("status", status);
 		System.out.println("Hadoop.run() >> End");
 		return resultMap;
 	}
 	
+	/***************************************************************************************/
 	// Hadoop 시스템 접속 기본 정의 요청 메소드
-	protected boolean init(String fileName) {
-		System.out.println("Hadoop.init() >> Start");
-		boolean status = true;
-		try {
-			// 접속 설정 객체 변수
-			localConf = new Configuration();
-			hadoopConf = new Configuration();
-			hadoopConf.set("fs.defaultFS", URL);
-			
-			// Hadoop 정제 시 사용 할 경로 객체 정의
-			inputPath = new Path(INPUT + fileName);
-			outputPath = new Path(OUTPUT);
-			
-			// 파일시스템 정보 정의
-			localSystem = FileSystem.getLocal(localConf);
-			hadoopSystem = FileSystem.get(hadoopConf);
-		} catch (Exception e) {
-			e.printStackTrace();
-			status = false;
-		}
-		System.out.println("Hadoop.init() >> End");
-		return status;
-	}
-	
+	 protected boolean init(String fileName) {
+	      System.out.println("Hadoop.init() >> Start");
+	      boolean status = true;
+	      try {
+	         // 접속 설정 객체 변수
+	         localConf = new Configuration();
+	         hadoopConf = new Configuration();
+	         hadoopConf.set("fs.defaultFS", URL);
+	         
+	         // Hadoop 정제 시 사용 할 경로 객체 정의
+	         inputPath = new Path(INPUT + fileName);
+	         outputPath = new Path(OUTPUT);
+	         
+	         // 파일시스템 정보 정의
+	         localSystem = FileSystem.getLocal(localConf);
+	         hadoopSystem = FileSystem.get(hadoopConf);
+	         
+	         if(hadoopSystem.exists(outputPath)) {
+	            hadoopSystem.delete(outputPath);
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	         status = false;
+	      }
+	      
+	      System.out.println("Hadoop.init() >> End");
+	      return status;
+	   }
+	 /***************************************************************************************/
+	 
+	 
 	// 분석 대상 파일 Hadoop에 저장
 	protected boolean fileCopy(String fileName) {
 		System.out.println("Hadoop.fileCopy() >> Start");
