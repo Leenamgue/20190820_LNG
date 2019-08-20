@@ -23,7 +23,8 @@ public class Hadoop {
 	protected Configuration localConf = null;
 	// hadoop 접속 주소 (hadoop server ip 수정 할것) <<<<<<<<<<<<<<<<<<
 	protected final String URL = "hdfs://192.168.3.145:9000";
-	protected final String LOCAL = "/root/data/";
+	protected final String LOCAL = "C:\\Users\\GD7\\Desktop\\data\\";
+//	protected final String LOCAL = "/root/data/";
 	// hadoop 정제 대상 경로 / 처리 결과 저장 경로 및 파일
 	protected final String INPUT = "/input/";
 	protected final String OUTPUT = "/output";
@@ -53,6 +54,8 @@ public class Hadoop {
 			 * 2) 정제 요청 : mapReduser()
 			 * 3) 성공 시 결과 받기 : resultData()
 			 **************************************************/
+			
+			/**/
 			if (fileCopy(fileName)) {
 				try {
 					mapReduser();
@@ -64,7 +67,7 @@ public class Hadoop {
 					status = 1;
 				}
 			}
-			
+			/**/
 		}
 		resultMap.put("status", status);
 		System.out.println("Hadoop.run() >> End");
@@ -104,7 +107,7 @@ public class Hadoop {
 			// 로컬 저장소에 있는 경로 파일 객체
 			Path filePath = new Path(LOCAL + fileName);
 			// 원본 데이터 열기
-			FSDataInputStream fsis = localSystem.open(filePath);
+			FSDataInputStream fsis = localSystem.open(filePath);// /root/data/1987.csv
 			// 대상 복사 만들기 
 			FSDataOutputStream fsos = hadoopSystem.create(inputPath);
 			int byteRead = 0;
@@ -164,7 +167,11 @@ public class Hadoop {
 			int byteRead = 0;
 			while((byteRead = fsis.read()) > 0) { 
 				// 정제 결과를 문자열 변수에 담기
-				sb.append(byteRead);
+				
+				
+				/**/
+				sb.append((char)byteRead);
+				/**/
 			}
 			fsis.close();
 		}
