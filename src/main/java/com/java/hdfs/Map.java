@@ -19,15 +19,19 @@ public class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
 	protected void map(LongWritable key, Text value, Mapper<LongWritable, Text, Text, IntWritable>.Context context) throws IOException, InterruptedException {
 		// 출력 키에 넣을 문자열 변수
 		String[] values = value.toString().split(",");
-		
+		int cancel = Integer.parseInt(values[21]);
 		String strKey = values[8];
 		
-		// 출력 키에 문자열 변수 적용
-		textKey.set(strKey);
+		if(cancel == 0) {
+			
 		
-		
-		// 전체 결과 출력하기
-		context.write(textKey, intValue);
+			// 출력 키에 문자열 변수 적용
+			textKey.set(strKey);
+			
+			
+			// 전체 결과 출력하기
+			context.write(textKey, intValue); //{"PS", 1 } {"PS", 1 } {"PS", 1 } {"PS", 1 } {"PS", 1 } {"PS", 1 }  
+		}//{"NA", 1 } 
 	}
 	
 }
